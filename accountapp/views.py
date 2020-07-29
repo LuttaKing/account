@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login,logout
-
+from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-
+from .models import Post
 @csrf_exempt
 def user_login(request):
         if request.method == 'POST':
@@ -34,6 +34,9 @@ def signup(request):
         user = User.objects.create_user(username, email, password)
    
         return HttpResponse('REgistered Successfully')
+
+class IndexView(ListView):
+    model=Post
    
 
 
