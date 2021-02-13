@@ -4,7 +4,8 @@ from django.contrib.auth import authenticate,login,logout
 from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
-from .models import Post
+from .models import Post,Account
+
 @csrf_exempt
 def user_login(request):
         if request.method == 'POST':
@@ -14,13 +15,12 @@ def user_login(request):
             user = authenticate(request,username=email,password=password)
             if user is not None:
                     if user.is_active:
-                        print(user.username)
-                        login(request, user)
-                        return HttpResponse('Authenticated successfully')
+                        #login(request, user)
+                        return HttpResponse(user.username+' Authenticated successfully')
                     else:
                         return HttpResponse('Disabled account')
             else:
-                    return HttpResponse('Invalid login')
+                    return HttpResponse('Invalid Login Credentials')
         else:
             return HttpResponse('Post req only')
 @csrf_exempt
@@ -35,8 +35,38 @@ def signup(request):
    
         return HttpResponse('REgistered Successfully')
 
-class IndexView(ListView):
-    model=Post
+@csrf_exempt
+def create_user_acc(request):
+    if request.method == 'POST':
+        email=request.POST['email']
+        username=request.POST['username']
+        password=request.POST['password']
+        
+        try:
+           userAcc = Account.objects.create_user(email,username,password)
+        except :
+            print('Error registering user')
+   
+        return HttpResponse('REgistered Successfully')
+
+
+@csrf_exempt
+def updateAccInfo(request):
+    if request.method == 'POST':
+        curr_username=request.POST['curr_username']
+        new_username=request.POST['new_username']
+        
+        userAcc = Account.objects.filter(username=curr_username)
+        Account.set_password(userAcc,raw_password=new_username)
+       
+       
+     #   userAcc.update(username=new_username)
+        
+
+        return HttpResponse('name changed successfully')
+       
+   
+        
    
 
 
