@@ -45,7 +45,7 @@ def create_user_acc(request):
         try:
            userAcc = Account.objects.create_user(email,username,password)
         except :
-            print('Error registering user')
+            return HttpResponse('Error registering user')
    
         return HttpResponse('REgistered Successfully')
 
