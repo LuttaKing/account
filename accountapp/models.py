@@ -37,7 +37,7 @@ class MyAccManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email = models.EmailField(verbose_name='email',max_length=60,unique=True)
-    username=models.CharField(max_length=30,unique=True)
+    username=models.CharField(max_length=30,unique=False)
     date_joined=models.DateTimeField(verbose_name='date_joined',auto_now_add=True)
     last_login=models.DateTimeField(verbose_name='last_login',auto_now=True)
     is_admin=models.BooleanField(default=False)
